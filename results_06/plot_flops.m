@@ -61,23 +61,29 @@ for tid = 1:length(size_list)
             tflops_DGEMM = tflops;
         end
 
-        idx = contains(func_i8,"fast-15") & m_i8 == m;
+        idx = contains(func_i8,"fast-16") & m_i8 == m;
         if any(idx)
             tflops = tflops_i8(idx);
             k = k_i8(idx);
-            plot(1:length(k),tflops,mark(1,1,2),'DisplayName',"INT8-based Ozaki-II fast (15 moduli)", 'MarkerSize',5, 'LineWidth',1);
+            plot(1:length(k),tflops,mark(1,1,2),'DisplayName',"INT8-based Ozaki-II fast (16 moduli)", 'MarkerSize',5, 'LineWidth',1);
             tflops_i8fast = tflops;
         end
 
-        idx = contains(func_i8,"accu-14") & m_i8 == m;
+        idx = contains(func_i8,"accu-15") & m_i8 == m;
         if any(idx)
             tflops = tflops_i8(idx);
             k = k_i8(idx);
-            plot(1:length(k),tflops,mark(1,1,3),'DisplayName',"INT8-based Ozaki-II accu. (14 moduli)", 'MarkerSize',5, 'LineWidth',1);
+            plot(1:length(k),tflops,mark(1,1,3),'DisplayName',"INT8-based Ozaki-II accu. (15 moduli)", 'MarkerSize',5, 'LineWidth',1);
             tflops_i8accu = tflops;
         end
 
         xlims = k;
+
+        if m==16384
+            tflops_i8fast(k==16384),tflops_i8accu(k==16384)
+        end
+        % m
+        % i8_dgemm = [tflops_i8fast,tflops_i8accu]./tflops_DGEMM
     end
 
     if ~isempty(dir_name_f8)
@@ -95,6 +101,15 @@ for tid = 1:length(size_list)
             k = k_f8(idx);
             plot(1:length(k),tflops,mark(1,1,5),'DisplayName',"FP8-based Ozaki-II accu. (12 moduli)", 'MarkerSize',5, 'LineWidth',1);
             tflops_f8accu = tflops;
+        end
+
+        % f8_dgemm = [tflops_f8fast,tflops_f8accu]./tflops_DGEMM(1:length(k))
+        % i8_f8 = [tflops_i8fast(1:length(k)),tflops_i8accu(1:length(k)),tflops_i8accu(1:length(k)),tflops_i8fast(1:length(k))]...
+        %     ./[tflops_f8fast,tflops_f8accu,tflops_f8fast,tflops_f8accu];
+        % [i8_f8_min,i8_f8_max] = bounds(i8_f8,'all')
+
+        if m==16384
+            tflops_f8fast(k==16384),tflops_f8accu(k==16384)
         end
 
         if length(k) > length(xlims)

@@ -2,7 +2,7 @@ function plot_breakdown(type_in,GPU_name)
 
 arguments (Input)
     type_in (1,1) string = "d"
-    GPU_name (1,1) string = "B200"
+    GPU_name (1,1) string = "RTX5080"
 end
 
 FontSize = 8;
@@ -79,7 +79,7 @@ for tid = 1:length(size_list)
 
     if ~isempty(dir_name_i8)
 
-        idx = contains(func_i8,"fast-15") & m_i8 == m;
+        idx = contains(func_i8,"fast-16") & m_i8 == m;
         if any(idx)
 
             colororder("glow");
@@ -98,7 +98,7 @@ for tid = 1:length(size_list)
     ylim([0 100]);
     yticks(0:20:100);
     if tid == 1
-        ylabel({"INT8-based","fast (15 moduli)"},'FontSize',FontSize);
+        ylabel({"INT8-based","fast (16 moduli)"},'FontSize',FontSize);
         yticklabels(0:20:100);
     else
         yticklabels([]);
@@ -127,7 +127,7 @@ for tid = 1:length(size_list)
 
     if ~isempty(dir_name_i8)
 
-        idx = contains(func_i8,"accu-14") & m_i8 == m;
+        idx = contains(func_i8,"accu-15") & m_i8 == m;
         if any(idx)
 
             colororder("glow");
@@ -146,7 +146,7 @@ for tid = 1:length(size_list)
     ylim([0 100]);
     yticks(0:20:100);
     if tid == 1
-        ylabel({"INT8-based","accu. (14 moduli)"},'FontSize',FontSize);
+        ylabel({"INT8-based","accu. (15 moduli)"},'FontSize',FontSize);
         yticklabels(0:20:100);
     else
         yticklabels([]);
