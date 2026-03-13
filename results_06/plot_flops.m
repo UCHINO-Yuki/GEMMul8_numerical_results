@@ -2,7 +2,7 @@ function plot_flops(type_in,GPU_name)
 
 arguments (Input)
     type_in (1,1) string = "d"
-    GPU_name (1,1) string = "B200"
+    GPU_name (1,1) string = "RTX5080"
 end
 
 FontSize = 8;
@@ -41,12 +41,12 @@ end
 %% plot
 size_list = [1024 2048 4096 8192 16384 32768];
 fig = figure('Position',[50,50,550,350]);
-t = tiledlayout(2,3);
 for i=length(size_list):-1:1
-    if size_list(i)>max(max(m_i8),max(m_f8))
+    if size_list(i)>min(max(m_i8),max(m_f8))
         size_list(i)=[];
     end
 end
+t = tiledlayout(2,ceil(length(size_list)/2));
 for tid = 1:length(size_list)
     m = size_list(tid);
     nexttile; hold on; grid on;

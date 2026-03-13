@@ -69,9 +69,14 @@ end
 %% plot
 labels = ["quant" "gemms" "requant" "dequant" "others"];
 size_list = [1024 2048 4096 8192 16384];
+for i=length(size_list):-1:1
+    if size_list(i)>min(max(m_i8),max(m_f8))
+        size_list(i)=[];
+    end
+end
 xlims = unique(k_i8);
 fig = figure('Position',[50,50,500,420]);
-t = tiledlayout(4,5);
+t = tiledlayout(4,length(size_list));
 
 for tid = 1:length(size_list)
     m = size_list(tid);
