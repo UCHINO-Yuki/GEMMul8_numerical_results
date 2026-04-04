@@ -20,7 +20,7 @@ if ~isempty(dir_name_i8)
     k_i8 = readmatrix(file_name_i8,data_i8);
     data_i8.SelectedVariableNames = 5;
     func_i8 = readmatrix(file_name_i8,data_i8);
-    data_i8.SelectedVariableNames = 8;
+    data_i8.SelectedVariableNames = 6;
     tflops_i8 = readmatrix(file_name_i8,data_i8);
 end
 %% plot
