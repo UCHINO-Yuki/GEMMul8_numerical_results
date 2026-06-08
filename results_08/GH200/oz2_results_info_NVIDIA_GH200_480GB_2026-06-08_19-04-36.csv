@@ -1,0 +1,10 @@
+Device Name: NVIDIA_GH200_480GB
+Device ID: 0
+Compute Capability: 9.0
+CUDA Driver API: 13.2(13020)
+CUDA Runtime: 13.2(13020)
+cuBLAS: 13.4.0(130400)
+cuBLASLt: 13.4.0(130400)
+CUDART_VERSION macro: 13.2(13020)
+CUDACC macro: 13.2.78
+cuBLAS macro: 13.4.0
