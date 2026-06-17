@@ -1,0 +1,18 @@
+
+BACKEND      : cuda
+CUDA_PATH    : /usr/local/cuda
+COMPILER     : nvcc
+HOST_CXX     : /usr/bin/g++
+HOST_CXX_VER : g++ (GCC) 11.5.0 20240719 (Red Hat 11.5.0-14)
+GPU_ARCH     : 120
+CPU          : AMD Ryzen 9 7950X 16-Core Processor;     
+CPU_CORES    : 16;     
+CPU_THREADS  : 16;     
+
+NVIDIA-SMI version  : 610.43.02
+NVML version        : 610.43
+DRIVER version      : Deprecated, see "KMD version" instead
+CUDA version        : Deprecated, see "CUDA UMD version" instead
+KMD version         : 610.43.02
+CUDA UMD version    : 13.3
+

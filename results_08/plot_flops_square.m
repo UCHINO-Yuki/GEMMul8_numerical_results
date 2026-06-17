@@ -120,6 +120,10 @@ native = upper(PREC) + upper(OP);
 Oz2_i8_NAME = "GEMMul8-I8-" + NMOD_i8;
 Oz2_f8_NAME = "GEMMul8-F8-" + NMOD_f8;
 native_NAME = "native " + native;
+if strcmp(OP, "trtrmm")
+    native_NAME = native_NAME + " (GEMM)";
+    cuBLAS_emu_NAME = cuBLAS_emu_NAME + " (GEMM)";
+end
 
 %% plot
 figs = cell(CSV_num,1);
@@ -143,7 +147,11 @@ for i=1:CSV_num
     flag_SIZE       = false;
     plotSIZE        = [];
     for n = SIZE
-        idx = (N{i} == n) & strcmp(FUNC{i}, native);
+        if strcmp(OP, "trtrmm")
+            idx = (N{i} == n) & contains(FUNC{i}, "TRTRMM");
+        else
+            idx = (N{i} == n) & strcmp(FUNC{i}, native);
+        end
         if any(idx)
             tflops_native(n == SIZE) = TFLOPS{i}(idx);
             flag_SIZE   = true;

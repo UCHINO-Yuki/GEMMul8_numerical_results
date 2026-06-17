@@ -1,0 +1,18 @@
+
+BACKEND      : cuda
+CUDA_PATH    : /usr/local/cuda
+COMPILER     : nvcc
+HOST_CXX     : /usr/bin/g++
+HOST_CXX_VER : g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+GPU_ARCH     : 89
+CPU          : Intel(R) Core(TM) i9-14900HX;     
+CPU_CORES    : 16;     
+CPU_THREADS  : 32;     
+
+NVIDIA-SMI version  : 610.43.02
+NVML version        : 610.43
+DRIVER version      : Deprecated, see "KMD version" instead
+CUDA version        : Deprecated, see "CUDA UMD version" instead
+KMD version         : 610.47
+CUDA UMD version    : 13.3
+

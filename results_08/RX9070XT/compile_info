@@ -1,0 +1,13 @@
+
+BACKEND      : hip
+HIP_PATH     : /opt/rocm
+COMPILER     : hipcc
+HOST_CXX     : /usr/bin/g++
+HOST_CXX_VER : g++ (GCC) 11.5.0 20240719 (Red Hat 11.5.0-14)
+GPU_ARCH     : gfx1201
+CPU          : Intel(R) Core(TM) i7-7820X CPU @ 3.60GHz;     
+CPU_CORES    : 8;     
+CPU_THREADS  : 8;     
+
+AMDSMI Tool: 26.2.2+c2d9476115 | AMDSMI Library version: 26.2.2 | ROCm version: 7.2.3 | amdgpu version: Linuxversion5.14.0-687.5.4.el9_8.x86_64(mockbuild@x64-builder01.almalinux.org)(gcc(GCC)11.5.020240719(RedHat11.5.0-14),GNUldversion2.35.2-72.el9)#1SMPPREEMPT_DYNAMICThuMay2809:20:26EDT2026 | hsmp version: N/A
+

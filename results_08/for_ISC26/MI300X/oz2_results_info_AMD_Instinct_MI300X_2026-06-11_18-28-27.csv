@@ -1,0 +1,10 @@
+Device Name: AMD_Instinct_MI300X
+Device ID: 0
+Compute Capability: 9.4
+Host Compiler: Clang 22.0.0git (https://github.com/RadeonOpenCompute/llvm-project roc-7.2.0 26014 7b800a19466229b8479a78de19143dc33c3ab9b5)
+HIP Arch Name: gfx942:sramecc+:xnack-
+HIP Driver API: 7.2.26015(70226015)
+HIP Runtime: 7.2.26015(70226015)
+hipBLAS macro: 3.2.0.5b515cf1bc
+hipBLASLt macro: 1.2.1.5b515cf1bc
+HIP macro: 7.2.26015

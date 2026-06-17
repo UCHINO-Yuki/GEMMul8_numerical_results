@@ -1,0 +1,11 @@
+Device Name: NVIDIA_GB10
+Device ID: 0
+Compute Capability: 12.1
+Host Compiler: GCC 13.3.0
+CUDA Driver API: 13.0(13000)
+CUDA Runtime: 13.3(13030)
+cuBLAS: 13.5.1(130501)
+cuBLASLt: 13.5.1(130501)
+CUDART_VERSION macro: 13.3(13030)
+CUDACC macro: 13.3.33
+cuBLAS macro: 13.5.1

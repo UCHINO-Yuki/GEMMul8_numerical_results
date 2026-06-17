@@ -1,0 +1,16 @@
+
+BACKEND      : cuda
+CUDA_PATH    : /usr/local/cuda
+COMPILER     : nvcc
+HOST_CXX     : /usr/bin/g++
+HOST_CXX_VER : g++ (GCC) 11.5.0 20240719 (Red Hat 11.5.0-5)
+GPU_ARCH     : 90
+CPU          : Neoverse-V2;     
+CPU_CORES    : 72;     
+CPU_THREADS  : 72;     
+
+NVIDIA-SMI version  : 595.58.03
+NVML version        : 595.58
+DRIVER version      : 595.58.03
+CUDA Version        : 13.2
+

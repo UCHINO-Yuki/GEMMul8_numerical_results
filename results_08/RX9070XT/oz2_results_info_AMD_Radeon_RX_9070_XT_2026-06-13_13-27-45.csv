@@ -1,0 +1,10 @@
+Device Name: AMD_Radeon_RX_9070_XT
+Device ID: 0
+Compute Capability: 12.0
+Host Compiler: Clang 22.0.0git (https://github.com/RadeonOpenCompute/llvm-project roc-7.2.3 26084 f58b06dce1f9c15707c5f808fd002e18c2accf7e)
+HIP Arch Name: gfx1201
+HIP Driver API: 7.2.53211(70253211)
+HIP Runtime: 7.2.53211(70253211)
+hipBLAS macro: 3.2.0.dabb6df2b9
+hipBLASLt macro: 1.2.2.dabb6df2b9
+HIP macro: 7.2.53211
