@@ -7,8 +7,8 @@ function plot_flops_square(ARCH,PREC)
 %   OP  : Operation Name         (string: "gemm","trmm","trsm","trtrmm", etc.)
 %
 arguments (Input)
-    ARCH (1,1) string = "MI300X";
-    PREC (1,1) string {mustBeMember(PREC,["s","d","c","z"])} = "z";
+    ARCH (1,1) string = "GB200";
+    PREC (1,1) string {mustBeMember(PREC,["s","d","c","z"])} = "d";
 end
 OP = "gemm";
 ARCH = upper(ARCH);
@@ -90,13 +90,13 @@ SIZE = [1024 2048 4096 8192 16384 32768];
 
 PEAK = 163.4;
 
-if strcmp(PREC,"c")
+if strcmp(PREC,"s")
     NMOD_i8 = 8;
     NMOD_f8 = 6;
     bits = 32;
     cuBLAS_emu      = "BF16x9";
     cuBLAS_emu_NAME = "cuBLAS BF16x9";
-elseif strcmp(PREC,"z")
+elseif strcmp(PREC,"d")
     NMOD_i8 = 15;
     NMOD_f8 = 12;
     bits = 64;
@@ -108,9 +108,9 @@ Oz2_i8 = "OS2-i8-accu-" + NMOD_i8;
 Oz2_f8 = "OS2-f8-accu-" + NMOD_f8;
 native = upper(PREC) + upper(OP);
 
-Oz2_i8_NAME = "GEMMul8-I8-" + NMOD_i8;
+Oz2_i8_NAME = "GEMMul8-" + NMOD_i8;
 Oz2_f8_NAME = "GEMMul8-F8-" + NMOD_f8;
-native_NAME = "native FP" + bits + " " + native;
+native_NAME = "native FP" + bits + " ";
 if strcmp(OP, "trtrmm")
     native_NAME = native_NAME + " (GEMM)";
     cuBLAS_emu_NAME = cuBLAS_emu_NAME + " (GEMM)";
@@ -177,10 +177,10 @@ for i=1:CSV_num
 
     x = 1:length(plotSIZE);
 
-    plot(x,ones(size(x)) * PEAK,mark(1,2,6), ...
-        'DisplayName',"native FP" + bits + " theoretical", ...
-        'MarkerSize',MarkerSize, ...
-        'LineWidth',LineWidth);
+    % plot(x,ones(size(x)) * PEAK,mark(1,2,6), ...
+    %     'DisplayName',"native FP" + bits + " theoretical", ...
+    %     'MarkerSize',MarkerSize, ...
+    %     'LineWidth',LineWidth);
 
     if flag_native
         plot(x,tflops_native,mark(3,8,1), ...
@@ -200,6 +200,9 @@ for i=1:CSV_num
             'MarkerSize',MarkerSize, ...
             'LineWidth',LineWidth);
     end
+
+    tflops_cuBLAS_emu
+    tflops_Oz2_i8
     % if flag_Oz2_f8
     %     plot(x,tflops_Oz2_f8,mark(1,2,6), ...
     %         'DisplayName',Oz2_f8_NAME, ...
@@ -228,7 +231,7 @@ for i=1:CSV_num
         lgd.Location = 'northwest';
     end
     param = replace(PARAMs{i},"_","\_");
-    TITLE = native + param;
+    TITLE = native;
     title(TITLE,'FontSize',FontSize,'FontName',FontName);
 
     axs{i} = gca;

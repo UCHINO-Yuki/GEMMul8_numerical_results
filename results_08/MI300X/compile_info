@@ -1,0 +1,13 @@
+
+BACKEND      : hip
+HIP_PATH     : /opt/rocm
+COMPILER     : hipcc
+HOST_CXX     : /usr/bin/g++
+HOST_CXX_VER : g++ (GCC) 11.5.0 20240719 (Red Hat 11.5.0-11)
+GPU_ARCH     : gfx942
+CPU          : AMD EPYC 9534 64-Core Processor;     
+CPU_CORES    : 128;     
+CPU_THREADS  : 128;     
+
+AMDSMI Tool: 26.2.1+fc0010cf6a | AMDSMI Library version: 26.2.1 | ROCm version: 7.2.0 | amdgpu version: 6.16.13 | hsmp version: N/A
+
