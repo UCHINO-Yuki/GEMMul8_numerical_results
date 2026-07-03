@@ -1,113 +1,113 @@
-function plot_accuracy(ARCH,PREC)
-%
-%PLOT_FLOPS_SQUARE(ARCH,PREC)
-%
-%   ARCH: Architecture Name      (string: "GB200", "H100", etc.)
-%   PREC: Precision              (string: "c" or "z")
-%
-% for gemm
+function plot_accuracy(gpu)
+
 arguments (Input)
-    ARCH (1,1) string = "GB200";
-    PREC (1,1) string {mustBeMember(PREC,["c","z"])} = "c";
+    gpu (1,1) string = "RTX4090Laptop"
 end
-ARCH = upper(ARCH);
-PREC = lower(PREC);
 
-FontSize = 12;
+FontSize = 8;
+type_in = "d";
 
-%% get CSV
-DIR = "for_ISC26/" + ARCH + "/";
-CSV = dir(DIR + "oz2_results_" + PREC + "gemm_accuracy_*");
-CSV_name = DIR + CSV.name;
+%% get data
+dir_name = dir(gpu + "/oz2_results_" + type_in + "gemm_accuracy*");
+file_name = gpu + "/" + dir_name.name;
+data = detectImportOptions(file_name);
 
-%% get values from csv
-data = detectImportOptions(CSV_name);
+idx = 1;
+data.SelectedVariableNames = idx;
+data_phi = readmatrix(file_name,data);
+data_phi = data_phi(2:end,:);
 
-data.SelectedVariableNames = 1;
-PHI = readmatrix(CSV_name,data);
-PHI(1) = [];
+idx = 4;
+data.SelectedVariableNames = idx;
+data_k = readmatrix(file_name,data);
+data_k = data_k(2:end,:);
 
-data.SelectedVariableNames = 4;
-K = readmatrix(CSV_name,data);
-K(1) = [];
+idx = 5;
+data.SelectedVariableNames = idx;
+data_func = readmatrix(file_name,data);
+data_func = data_func(2:end,:);
 
-data.SelectedVariableNames = 5;
-FUNC = readmatrix(CSV_name,data);
-FUNC(1) = [];
-
-data.SelectedVariableNames = 6:length(data.VariableNames);
-TABLE = readmatrix(CSV_name,data);
-MODULI = TABLE(1,:);
-ERROR = TABLE(2:end,:);
-
-if strcmp(PREC,"z")
-ERROR = ERROR(:,12 <= MODULI & MODULI <= 18);
-MODULI = MODULI(12 <= MODULI & MODULI <= 18);
-end
+data.SelectedVariableNames = idx+1:length(data.VariableNames);
+data_err = readmatrix(file_name,data);
+data_moduli = data_err(1,:);
+data_err = data_err(2:end,:);
 
 %% plot
-phi = 0.5;
-idx_phi = (PHI == phi);
-k = 65536;
-idx_k = (K == k);
-FontName   = "Yu Gothic UI Semibold";
-MarkerSize = 5;
-LineWidth  = 1;
+yl_min = inf;
+yl_max = 0;
+phi = [-1, 1, 2, 4];
+fig = figure('Position',[50,50,550,300]);
+t = tiledlayout(1,4);
+for tid = 1:4
+    nexttile; hold on; grid on;
 
-if strcmp(PREC,"c")
-    bits = 32;
-    cuBLAS_emu      = "BF16x9";
-    cuBLAS_emu_NAME = "cuBLAS BF16x9";
-elseif strcmp(PREC,"z")
-    bits = 64;
-    cuBLAS_emu      = "OS1-7";
-    cuBLAS_emu_NAME = "cuBLAS Ozaki-I-7";
+    for k = [1024, max(data_k)]
+
+        idx = contains(data_func,"DGEMM") & data_k == k & data_phi == phi(tid);
+        err = data_err(idx,:);
+        plot(data_moduli, err, mark(3-2*(k==1024),1,1), 'DisplayName', "native FP64 DGEMM {\itk=" + k +"}", 'MarkerSize',5, 'LineWidth',1);
+
+        idx = contains(data_func,"OS1-7") & data_k == k & data_phi == phi(tid);
+        err = data_err(idx,:);
+        plot(data_moduli, err, mark(3-2*(k==1024),1,2), 'DisplayName', "INT8-based Ozaki-I (7 slices) {\itk=" + k +"}", 'MarkerSize',5, 'LineWidth',1);
+
+        idx = contains(data_func,"OS2-i8-fast") & data_k == k & data_phi == phi(tid);
+        err = data_err(idx,:);
+        plot(data_moduli, err, mark(3-2*(k==1024),1,3), 'DisplayName', "INT8 Ozaki-II (fast) {\itk=" + k +"}", 'MarkerSize',5, 'LineWidth',1);
+
+        idx = contains(data_func,"OS2-i8-accu") & data_k == k & data_phi == phi(tid);
+        err = data_err(idx,:);
+        plot(data_moduli, err, mark(3-2*(k==1024),1,4), 'DisplayName', "INT8 Ozaki-II (acc.) {\itk=" + k +"}", 'MarkerSize',5, 'LineWidth',1);
+
+        idx = contains(data_func,"OS2-f8-fast") & data_k == k & data_phi == phi(tid);
+        err = data_err(idx,:);
+        plot(data_moduli, err, mark(3-2*(k==1024),1,5), 'DisplayName', "FP8 Ozaki-II (fast) {\itk=" + k +"}", 'MarkerSize',5, 'LineWidth',1);
+
+        idx = contains(data_func,"OS2-f8-accu") & data_k == k & data_phi == phi(tid);
+        err = data_err(idx,:);
+        plot(data_moduli, err, mark(3-2*(k==1024),1,6), 'DisplayName', "FP8 Ozaki-II (acc.) {\itk=" + k +"}", 'MarkerSize',5, 'LineWidth',1);
+
+        xlim([min(data_moduli), max(data_moduli)]);
+        xticks(data_moduli);
+    end
+
+    if phi(tid)<0
+        title("Std. normal", 'Interpreter','tex');
+    else
+        title("{\it\phi = " + phi(tid) + "}", 'Interpreter','tex');
+    end
+    set(gca,'FontSize',FontSize,'FontName','Yu Gothic UI Semibold','YScale','Log');
+    ylim('padded');
+    yl_tmp = ylim;
+    yl_min = min(yl_min, yl_tmp(1));
+    yl_max = max(yl_max, yl_tmp(2));
 end
 
-fig = figure('Position',[50,50,250,400]);
-t = tiledlayout(1,1);
-nexttile; hold on; grid on;
+for tid = 1:4
+    nexttile(tid);
+    ylim([yl_min, yl_max]);
+    yticks(10.^(-20:4:20));
+    if tid > 1
+        yticklabels([]);
+    end
+end
 
-idx_func = FUNC == (upper(PREC) + "GEMM");
-idx = idx_func & idx_phi & idx_k;
-err = ERROR(idx,:);
-plot(MODULI,err,mark(1,2,1), ...
-    'DisplayName',"native FP" + bits, ...
-    'MarkerSize',MarkerSize+4, ...
-    'LineWidth',LineWidth);
-
-idx_func = FUNC == cuBLAS_emu;
-idx = idx_func & idx_phi & idx_k;
-err = ERROR(idx,:);
-plot(MODULI,err,mark(1,1,3), ...
-    'DisplayName',cuBLAS_emu_NAME, ...
-    'MarkerSize',MarkerSize+4, ...
-    'LineWidth',LineWidth);
-
-idx_func = FUNC == ("OS2-i8-accu");
-idx = idx_func & idx_phi & idx_k;
-err = ERROR(idx,:);
-plot(MODULI,err,mark(1,4,4), ...
-    'DisplayName',"Ozaki-II", ...
-    'MarkerSize',MarkerSize+4, ...
-    'LineWidth',LineWidth);
-
-xlim([min(MODULI), max(MODULI)]);
-xticks(MODULI);
-xtickangle(0);
-set(gca,'FontSize',FontSize,'FontName',FontName,'YScale','Log');
-ylim('padded');
-yticks(10.^(-18:2:10))
-
-lgd = legend('Interpreter','tex','FontName',FontName,'IconColumnWidth',15,'NumColumns',1);
+lgd = legend('Interpreter','tex','FontName','Yu Gothic UI Semibold','IconColumnWidth',15,'NumColumns',2);
 lgd.Layout.Tile = 'north';
 t.TileSpacing = "tight";
 t.Padding = "compact";
-xlabel("Number of moduli");
-ylabel("Max. relative error");
+xlabel(t,"Number of moduli",'FontName','Yu Gothic UI Semibold');
+ylabel(t,"Max. relative error",'FontName','Yu Gothic UI Semibold');
 set(gca,'FontSize',FontSize,'FontName','Yu Gothic UI Semibold');
 
-savefig(fig,DIR+ARCH+"_accuracy_"+lower(PREC));
-exportgraphics(fig,DIR+ARCH+"_accuracy_"+lower(PREC)+".png",'Resolution',600);
+savefig(fig,gpu+"/"+gpu+"_accuracy_"+type_in);
+exportgraphics(fig,gpu+"/"+gpu+"_accuracy_"+type_in+".png",'Resolution',600);
+end
 
+%%
+function m = mark(i,j,k)
+lines = {"-",":","--",""};
+markers = {"", "o", "x", "d", "p", "+", ".", "s", "h", "^", "v", ">", "<"};
+colors = {"k", "c", "r", "b", "g", "m"};
+m = lines{i} + markers{j} + colors(k);
 end

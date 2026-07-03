@@ -12,7 +12,7 @@ arguments (Input)
     OP (1,1) string {mustBeMember(OP, ...
         ["gemm","trmm","trsm","trtrmm",...
         "symm","syrk","syr2k","syrkx", ...
-        "hemm","herk","her2k","herkx"])} = "trtrmm";
+        "hemm","herk","her2k","herkx"])} = "gemm";
 end
 ARCH = upper(ARCH);
 PREC = lower(PREC);
@@ -92,12 +92,12 @@ LineWidth  = 1;
 SIZE = [1024 2048 4096 8192 16384 32768];
 
 if strcmp(PREC,"s")
-    NMOD_i8 = 7;
+    NMOD_i8 = 8;
     NMOD_f8 = 6;
     cuBLAS_emu      = "BF16x9";
     cuBLAS_emu_NAME = "cuBLAS BF16x9";
 elseif strcmp(PREC,"c")
-    NMOD_i8 = 7;
+    NMOD_i8 = 8;
     NMOD_f8 = 6;
     cuBLAS_emu      = "BF16x9";
     cuBLAS_emu_NAME = "cuBLAS BF16x9";
@@ -107,14 +107,14 @@ elseif strcmp(PREC,"d")
     cuBLAS_emu      = "OS1-7";
     cuBLAS_emu_NAME = "cuBLAS Ozaki-I-7";
 elseif strcmp(PREC,"z")
-    NMOD_i8 = 14;
+    NMOD_i8 = 15;
     NMOD_f8 = 12;
     cuBLAS_emu      = "OS1-7";
     cuBLAS_emu_NAME = "cuBLAS Ozaki-I-7";
 end
 
-Oz2_i8 = "OS2-i8-accu-" + NMOD_i8;
-Oz2_f8 = "OS2-f8-accu-" + NMOD_f8;
+Oz2_i8 = "OS2-i8-fast-" + NMOD_i8;
+Oz2_f8 = "OS2-f8-fast-" + NMOD_f8;
 native = upper(PREC) + upper(OP);
 
 Oz2_i8_NAME = "GEMMul8-I8-" + NMOD_i8;
