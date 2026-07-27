@@ -102,12 +102,12 @@ elseif strcmp(PREC,"c")
     cuBLAS_emu      = "BF16x9";
     cuBLAS_emu_NAME = "cuBLAS BF16x9";
 elseif strcmp(PREC,"d")
-    NMOD_i8 = 15;
+    NMOD_i8 = 14;
     NMOD_f8 = 12;
     cuBLAS_emu      = "OS1-7";
     cuBLAS_emu_NAME = "cuBLAS Ozaki-I-7";
 elseif strcmp(PREC,"z")
-    NMOD_i8 = 15;
+    NMOD_i8 = 14;
     NMOD_f8 = 12;
     cuBLAS_emu      = "OS1-7";
     cuBLAS_emu_NAME = "cuBLAS Ozaki-I-7";
