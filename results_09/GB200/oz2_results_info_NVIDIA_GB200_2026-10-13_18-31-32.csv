@@ -1,0 +1,11 @@
+Device Name: NVIDIA_GB200
+Device ID: 0
+Compute Capability: 10.0
+Host Compiler: GCC 13.3.0
+CUDA Driver API: 13.0(13000)
+CUDA Runtime: 13.4(13040)
+cuBLAS: 13.8.0(130800)
+cuBLASLt: 13.8.0(130800)
+CUDART_VERSION macro: 13.4(13040)
+CUDACC macro: 13.4.92
+cuBLAS macro: 13.8.0

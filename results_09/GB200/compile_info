@@ -1,0 +1,18 @@
+
+BACKEND      : cuda
+OPS          : gemm
+OZ2_BACKENDS : FP8 INT8
+CUDA_PATH    : /shared/software/cuda/13.4.2
+COMPILER     : nvcc
+HOST_CXX     : /usr/bin/g++
+HOST_CXX_VER : g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+GPU_ARCH     : 100
+CPU          : Neoverse-V2;     
+CPU_CORES    : 144;     
+CPU_THREADS  : 64;     
+
+NVIDIA-SMI version  : 580.178.04
+NVML version        : 580.178
+DRIVER version      : 580.178.04
+CUDA Version        : 13.0
+
